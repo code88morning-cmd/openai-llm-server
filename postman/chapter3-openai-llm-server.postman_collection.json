@@ -1,0 +1,102 @@
+{
+  "info": {
+    "name": "Chapter3 OpenAI LLM Server",
+    "description": "NestJS backend API test collection for Chapter3 assignment",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["health"]
+        }
+      }
+    },
+    {
+      "name": "OpenAI Status",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/openai/status",
+          "host": ["{{baseUrl}}"],
+          "path": ["openai", "status"]
+        }
+      }
+    },
+    {
+      "name": "Q&A Chat - Text Response",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"prompt\": \"Who are you?\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/openai/chat",
+          "host": ["{{baseUrl}}"],
+          "path": ["openai", "chat"]
+        }
+      }
+    },
+    {
+      "name": "Q&A Chat - JSON Response",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"prompt\": \"REST API를 한 문장으로 설명해줘.\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/openai/chat-json",
+          "host": ["{{baseUrl}}"],
+          "path": ["openai", "chat-json"]
+        }
+      }
+    },
+    {
+      "name": "Q&A Chat - Message Array",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"messages\": [\n    {\"role\": \"system\", \"content\": \"You are a concise backend tutor.\"},\n    {\"role\": \"user\", \"content\": \"NestJS Controller와 Service 차이를 설명해줘.\"}\n  ]\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/openai/chat-messages",
+          "host": ["{{baseUrl}}"],
+          "path": ["openai", "chat-messages"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    }
+  ]
+}
