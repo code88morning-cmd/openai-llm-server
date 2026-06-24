@@ -275,4 +275,94 @@ git branch -M main
 git remote add origin <YOUR_GITHUB_REPOSITORY_URL>
 git push -u origin main
 ```
-# openai-llm-server
+
+---
+
+## 10. RAG + Redis Vector Search 추가 기능
+
+본 프로젝트는 기본 OpenAI Q&A API 외에 Redis Stack 기반 RAG 기능을 추가로 포함합니다.
+
+| 항목 | 내용 |
+|---|---|
+| RAG 문서 위치 | `src/rag/*.txt` |
+| 벡터 저장소 | Redis Stack / RediSearch / RedisJSON |
+| 임베딩 모델 | `text-embedding-3-small` |
+| 벡터 차원 | `1536` |
+| RAG 엔드포인트 | `POST /openai/rag` |
+| RAG 초기화 엔드포인트 | `POST /openai/reset-rag` |
+
+### 10.1 Redis Stack 실행
+
+RAG 기능은 일반 Redis가 아니라 **Redis Stack**이 필요합니다. RediSearch와 RedisJSON 기능을 사용하기 때문입니다.
+
+```bash
+docker run -d --name redis-stack -p 6379:6379 redis/redis-stack:latest
+```
+
+### 10.2 RAG 환경 변수
+
+```env
+REDIS_URL=redis://localhost:6379
+RAG_INDEX_NAME=my-tech-chatbot
+RAG_DOCS_PATH=src/rag
+RAG_AUTO_INDEX=false
+OPENAI_EMBEDDING_MODEL=text-embedding-3-small
+OPENAI_EMBEDDING_DIMENSION=1536
+```
+
+`RAG_AUTO_INDEX=false` 상태에서는 서버 시작 시 자동 인덱싱하지 않습니다. 대신 아래 API로 인덱스를 수동 생성합니다.
+
+### 10.3 RAG 인덱스 초기화
+
+```bash
+curl -X POST http://localhost:3000/openai/reset-rag
+```
+
+예상 응답:
+
+```json
+{
+  "message": "RAG system has been reset successfully."
+}
+```
+
+### 10.4 RAG 질의 테스트
+
+```bash
+curl -X POST http://localhost:3000/openai/rag \
+  -H "Content-Type: application/json" \
+  -d '{"prompt":"운영체제에서 프로세스와 스레드 차이를 설명해줘.","topK":3}'
+```
+
+예상 응답 구조:
+
+```json
+{
+  "success": true,
+  "message": "RAG 기반 답변 내용",
+  "sources": [
+    {
+      "id": "doc:os:0",
+      "text": "검색된 문서 청크",
+      "score": "0.123"
+    }
+  ]
+}
+```
+
+### 10.5 추가된 파일
+
+```text
+src/infra/redis/redis.module.ts
+src/infra/redis/redis.service.ts
+src/openai/dto/rag.request.dto.ts
+src/openai/interfaces/rag-response.interface.ts
+src/rag/db.txt
+src/rag/network.txt
+src/rag/os.txt
+src/rag/source.txt
+scripts/reset-rag.sh
+scripts/test-rag.sh
+```
+
+주의: Redis Stack이 실행되지 않은 상태에서도 기본 `/openai/chat` 기능은 사용할 수 있습니다. RAG 기능만 Redis Stack 연결이 필요합니다.

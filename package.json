@@ -1,7 +1,7 @@
 {
   "name": "chapter3-openai-llm-server",
   "version": "1.0.0",
-  "description": "Chapter 3 assignment: LLM Q&A backend server using NestJS and OpenAI API",
+  "description": "Chapter 3 assignment: LLM Q&A backend server using NestJS, OpenAI API, Redis, and RAG",
   "author": "financial-dt-developer",
   "private": true,
   "license": "MIT",
@@ -15,7 +15,9 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
-    "curl:chat": "sh scripts/test-chat.sh"
+    "curl:chat": "sh scripts/test-chat.sh",
+    "curl:rag": "sh scripts/test-rag.sh",
+    "curl:reset-rag": "sh scripts/reset-rag.sh"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
@@ -26,7 +28,8 @@
     "class-validator": "^0.14.1",
     "openai": "^6.0.0",
     "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "redis": "^4.7.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
@@ -54,11 +57,19 @@
     "typescript-eslint": "^8.20.0"
   },
   "jest": {
-    "moduleFileExtensions": ["js", "json", "ts"],
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
     "rootDir": "src",
     "testRegex": ".*\\.spec\\.ts$",
-    "transform": {"^.+\\.(t|j)s$": "ts-jest"},
-    "collectCoverageFrom": ["**/*.(t|j)s"],
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   }

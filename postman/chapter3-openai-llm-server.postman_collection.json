@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "Chapter3 OpenAI LLM Server",
-    "description": "NestJS backend API test collection for Chapter3 assignment",
+    "description": "NestJS backend API test collection for Chapter3 assignment with OpenAI, Redis, and RAG endpoints",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -12,8 +12,12 @@
         "header": [],
         "url": {
           "raw": "{{baseUrl}}/health",
-          "host": ["{{baseUrl}}"],
-          "path": ["health"]
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "health"
+          ]
         }
       }
     },
@@ -24,8 +28,13 @@
         "header": [],
         "url": {
           "raw": "{{baseUrl}}/openai/status",
-          "host": ["{{baseUrl}}"],
-          "path": ["openai", "status"]
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "openai",
+            "status"
+          ]
         }
       }
     },
@@ -45,8 +54,13 @@
         },
         "url": {
           "raw": "{{baseUrl}}/openai/chat",
-          "host": ["{{baseUrl}}"],
-          "path": ["openai", "chat"]
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "openai",
+            "chat"
+          ]
         }
       }
     },
@@ -66,8 +80,13 @@
         },
         "url": {
           "raw": "{{baseUrl}}/openai/chat-json",
-          "host": ["{{baseUrl}}"],
-          "path": ["openai", "chat-json"]
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "openai",
+            "chat-json"
+          ]
         }
       }
     },
@@ -87,8 +106,56 @@
         },
         "url": {
           "raw": "{{baseUrl}}/openai/chat-messages",
-          "host": ["{{baseUrl}}"],
-          "path": ["openai", "chat-messages"]
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "openai",
+            "chat-messages"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Reset RAG Index",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/openai/reset-rag",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "openai",
+            "reset-rag"
+          ]
+        }
+      }
+    },
+    {
+      "name": "RAG Chat - Redis Vector Search",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"prompt\": \"운영체제에서 프로세스와 스레드 차이를 설명해줘.\",\n  \"topK\": 3\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/openai/rag",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "openai",
+            "rag"
+          ]
         }
       }
     }
